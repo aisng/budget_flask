@@ -1,0 +1,37 @@
+{% extends "base.html" %}
+
+{% block content %}
+
+<form method="post" action="" class="row g-3 align-items-center">
+    {{ form.hidden_tag() }}
+    <!-- <div class="col-1 align-items-center">
+        {{ form.amount.label(class="form-control-label") }}
+    </div> -->
+    <div class="col-2 align-items-center">
+        {{ form.amount(class="form-control col-auto", placeholder="Amount") }}
+        <div class="invalid-feedback">
+            {% for error in form.amount.errors %}
+            <span>{{ error }}</span>
+            {% endfor %}
+        </div>
+    </div>
+    <div class="col-3">
+        {% for subfield in form.entry_type %}
+        <div class="col">
+            {{ subfield(class="form-check-input") }}
+            {{ subfield.label(class="form-check-label" )}}
+        </div>
+        <div class="invalid-feedback">
+            {% for error in form.entry_type.errors %}
+            <span>{{ error }}</span>
+            {% endfor %}
+        </div>
+        {% endfor %}
+    </div>
+    <div class="">
+        {{ form.submit(class="btn btn-primary mt-2") }}
+    </div>
+
+</form>
+
+{% endblock %}

@@ -1,0 +1,35 @@
+{% extends "base.html" %}
+
+{% block content %}
+
+<form method="post" action="#" class="m-2 p-3">
+    {{ form.hidden_tag() }}
+    <div class="form-group mt-2 mb-2">
+        {{ form.email.label(class="form-control-label") }}
+        {{ form.email(class="form-control") }}
+        <div class="invalid-feedback">
+            {% for error in form.email.errors %}
+            <span>{{ error }}</span>
+            {% endfor %}
+        </div>
+    </div>
+    <div class="form-group mt-2 mb-2">
+        {{ form.password.label(class="form-control-label") }}
+        {{ form.password(class="form-control") }}
+        <div class="invalid-feedback">
+            {% for error in form.password.errors %}
+            <span>{{ error }}</span>
+            {% endfor %}
+        </div>
+    </div>
+    <div class="form-check mt-2 mb-2">
+        {{ form.remember_me(class="form-check-input") }}
+        {{ form.remember_me.label(class="form-check-label") }}
+    </div>
+    <div class="form-group mt-2 mb-2">
+        {{ form.submit(class="btn btn-primary mt-2") }}
+    </div>
+
+</form>
+
+{% endblock %}

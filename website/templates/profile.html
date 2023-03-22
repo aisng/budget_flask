@@ -1,0 +1,21 @@
+{% extends "base.html" %}
+
+{% block content %}
+
+<div class="container">
+    <div class="row row-cols-2">
+        <div class="col">
+            <img class="rounded-circle img-thumbnail" src="{{ profile_pic }}">
+        </div>
+        <div class="col-auto">
+            <h4>{{ current_user.username }}</h4>
+            <p>E-mail: {{ current_user.email }}</p>
+            <p>Total entries: {{ total_entries }}</p>
+            <a href="{{ url_for('views.update_profile') }}" class="btn btn-secondary btn-sm" role="button">Update
+                profile
+            </a>
+        </div>
+    </div>
+</div>
+
+{% endblock %}
