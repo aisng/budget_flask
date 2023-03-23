@@ -1,6 +1,6 @@
 from flask import Blueprint, redirect, render_template, flash, request, url_for
 from flask_login import login_required, current_user
-from .models import Entry, User
+from .models import Entry
 from .forms import EntryForm, UpdateProfileForm
 from . import db
 from .utils import save_picture, amount_conversion
@@ -69,14 +69,15 @@ def entries():
 def new_entry():
     form = EntryForm()
     if form.validate_on_submit():
-        if type(form.amount.data) is float:
-            amount_cents_int = int(form.amount.data * 100)
-        if form.entry_type.data == "expense":
-            amount_cents_int = -abs(amount_cents_int)
-        elif form.entry_type.data == "income":
-            amount_cents_int = abs(amount_cents_int)
+        form.amount.data = amount_conversion(form.amount.data, form.entry_type.data)
+        # if type(form.amount.data) is float:
+        #     amount_cents_int = int(form.amount.data * 100)
+        # if form.entry_type.data == "expense":
+        #     amount_cents_int = -abs(amount_cents_int)
+        # elif form.entry_type.data == "income":
+        #     amount_cents_int = abs(amount_cents_int)
 
-        new_entry = Entry(amount=amount_cents_int, user_id=current_user.id)
+        new_entry = Entry(amount=form.amount.data, user_id=current_user.id)
         db.session.add(new_entry)
         db.session.commit()
         flash(f"Added {form.entry_type.data} entry.", "success")

@@ -1,6 +1,8 @@
 from . import db
 from flask_login import UserMixin
 from sqlalchemy.sql import func
+from itsdangerous import URLSafeTimedSerializer as Serializer
+from flask import current_app
 
 
 class User(db.Model, UserMixin):
@@ -11,6 +13,17 @@ class User(db.Model, UserMixin):
     image_file = db.Column(db.String(40), nullable=False, default="default.jpg")
     password = db.Column(db.String(150), nullable=False)
     entries = db.relationship("Entry", back_populates="user")
+
+    def get_reset_token(self):
+        s = Serializer(current_app.config["SECRET_KEY"])
+        return s.dumps(self.id)
+
+    @staticmethod
+    def verify_reset_token(token, max_age=3600):
+        s = Serializer(current_app.config["SECRET_KEY"])
+        user_id = s.loads(token, max_age=max_age)
+        print(user_id)
+        return User.query.get(user_id)
 
 
 class Entry(db.Model):

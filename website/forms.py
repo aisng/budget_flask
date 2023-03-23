@@ -13,6 +13,7 @@ from wtforms.validators import (
     ValidationError,
     EqualTo,
     NumberRange,
+    Email,
 )
 from .models import User
 from flask_login import current_user
@@ -20,7 +21,7 @@ from flask_login import current_user
 
 class RegistrationForm(FlaskForm):
     username = StringField(
-        "User name", validators=[DataRequired(message="Required field.")]
+        "Username", validators=[DataRequired(message="Required field.")]
     )
     email = StringField("E-mail", validators=[DataRequired(message="Required field.")])
     password = PasswordField(
@@ -88,3 +89,21 @@ class EntryForm(FlaskForm):
     )
 
     submit = SubmitField("Submit")
+
+
+class RequestResetForm(FlaskForm):
+    email = StringField("E-mail", validators=[DataRequired(), Email()])
+    submit = SubmitField("Send")
+
+    def validate_email(self, email):
+        user = User.query.filter_by(email=email.data).first()
+        if user is None:
+            raise ValidationError("No profile for this E-mail")
+
+
+class ResetPasswordForm(FlaskForm):
+    password = PasswordField("Password", validators=[DataRequired()])
+    password_confirm = PasswordField(
+        "Confirm password", validators=[DataRequired(), EqualTo("password")]
+    )
+    submit = SubmitField("Reset password")

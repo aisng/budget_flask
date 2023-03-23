@@ -29,6 +29,9 @@
     <div class="form-group mt-2 mb-2">
         {{ form.submit(class="btn btn-primary mt-2") }}
     </div>
+    <small class="text-muted ml-2">
+        <a href="{{ url_for('auth.reset_password_request') }}">Forgot your password?</a>
+    </small>
 
 </form>
 

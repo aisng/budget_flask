@@ -1,10 +1,43 @@
 from flask import Blueprint, render_template, redirect, request, url_for, flash
 from . import db, bcrypt
 from .models import User
-from .forms import RegistrationForm, LoginForm
+from .forms import RegistrationForm, LoginForm, RequestResetForm, ResetPasswordForm
 from flask_login import login_user, logout_user, login_required, current_user
+from .utils import send_reset_email
 
 auth = Blueprint("auth", __name__)
+
+
+@auth.route("/reset_password_request", methods=["GET", "POST"])
+def reset_password_request():
+    if current_user.is_authenticated:
+        return redirect(url_for("views.index"))
+    form = RequestResetForm()
+    if form.validate_on_submit():
+        user = User.query.filter_by(email=form.email.data).first()
+        send_reset_email(user)
+        flash(f"Password reset instructions sent to {user.email}", "success")
+    return render_template(
+        "reset_password_request.html", title="Reset password", form=form
+    )
+
+
+@auth.route("/reset_password/<token>", methods=["GET", "POST"])
+def reset_password(token):
+    if current_user.is_authenticated:
+        return redirect(url_for("views.index"))
+    user = User.verify_reset_token(token)
+    if user is None:
+        flash("Bad or expired request", "danger")
+        return redirect(url_for("auth.reset_password_request"))
+    form = ResetPasswordForm()
+    if form.validate_on_submit():
+        hashed_pw = bcrypt.generate_password_hash(form.password.data).decode("utf-8")
+        user.password = hashed_pw
+        db.session.commit()
+        flash("Password reset successful.", "success")
+        return redirect(url_for("auth.login"))
+    return render_template("reset_password.html", title="Reset password", form=form)
 
 
 @auth.route("/register", methods=["GET", "POST"])
