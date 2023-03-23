@@ -70,13 +70,6 @@ def new_entry():
     form = EntryForm()
     if form.validate_on_submit():
         form.amount.data = amount_conversion(form.amount.data, form.entry_type.data)
-        # if type(form.amount.data) is float:
-        #     amount_cents_int = int(form.amount.data * 100)
-        # if form.entry_type.data == "expense":
-        #     amount_cents_int = -abs(amount_cents_int)
-        # elif form.entry_type.data == "income":
-        #     amount_cents_int = abs(amount_cents_int)
-
         new_entry = Entry(amount=form.amount.data, user_id=current_user.id)
         db.session.add(new_entry)
         db.session.commit()
@@ -106,3 +99,18 @@ def delete_entry(entry_id):
     db.session.delete(entry)
     db.session.commit()
     return redirect(url_for("views.entries"))
+
+
+@views.errorhandler(404)
+def error_404(error):
+    return render_template("404.html"), 404
+
+
+@views.errorhandler(403)
+def error_403(error):
+    return render_template("403.html"), 403
+
+
+@views.errorhandler(500)
+def error_500(error):
+    return render_template("500.html"), 500

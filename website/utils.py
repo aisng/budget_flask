@@ -4,7 +4,6 @@ from PIL import Image
 from flask import current_app, url_for
 from . import mail
 from flask_mail import Message
-from config import Config
 
 
 def save_picture(form_picture):
@@ -24,9 +23,9 @@ def save_picture(form_picture):
 
 
 def amount_conversion(amount_data, amount_type_data=None):
-    """if amount_type_data is not None, converts the amount (float) to cents (int)
-    and returns positive or negative amount value based on amount_type_data
-    if amount_type_data is None, converts the value in cents (int) stored in the database to display to the user as float
+    """if amount_type_data is not None, converts the user input amount (float) to cents (int)
+    and returns positive or negative amount value based on amount_type_data.
+    if amount_type_data is None, converts the value in cents (int) stored in the database to display to the user as a float
     """
     if type(amount_data) is float and amount_type_data:
         amount_data = int(amount_data * 100)

@@ -1,14 +1,12 @@
+from os import path
 from flask import Flask
 from flask_sqlalchemy import SQLAlchemy
-from os import path, environ
 from flask_login import LoginManager
 from flask_bcrypt import Bcrypt
 from flask_admin import Admin
 from flask_mail import Mail
 from config import Config
 
-basedir = path.abspath(path.dirname(__file__))
-DB_NAME = "database.sqlite"
 
 admin = Admin()
 db = SQLAlchemy()
