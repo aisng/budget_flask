@@ -1,9 +1,9 @@
 from flask import Blueprint, redirect, render_template, flash, request, url_for
 from flask_login import login_required, current_user
-from .models import Entry
-from .forms import EntryForm, UpdateProfileForm
-from . import db
-from .utils import save_picture, amount_conversion
+from website.models import Entry
+from website.forms import EntryForm, UpdateProfileForm
+from website import db
+from website.utils import save_picture, amount_conversion
 
 views = Blueprint("views", __name__)
 

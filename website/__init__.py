@@ -26,10 +26,10 @@ def create_app():
     admin.init_app(app)
     mail.init_app(app)
 
-    from .views import views
-    from .auth import auth
-    from .models import User, Entry
-    from .admin_view import AdminModelView
+    from website.views import views
+    from website.auth import auth
+    from website.models import User, Entry
+    from website.admin_view import AdminModelView
 
     create_database()
 

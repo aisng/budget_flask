@@ -15,7 +15,7 @@ from wtforms.validators import (
     NumberRange,
     Email,
 )
-from .models import User
+from website.models import User
 from flask_login import current_user
 
 
