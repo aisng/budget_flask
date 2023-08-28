@@ -5,7 +5,7 @@ DB_NAME = "database.sqlite"
 
 
 class Config:
-    SECRET_KEY = os.environ.get("BUDGET_SECRET_KEY")
+    SECRET_KEY = os.environ.get("BUDGET_SECRET_KESY") or "verysecretkey"
     SQLALCHEMY_DATABASE_URI = os.environ.get(
         "DATABASE_URI"
     ) or "sqlite:///" + os.path.join(basedir, DB_NAME)
