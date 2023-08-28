@@ -11,7 +11,7 @@ Simple Flask application where users can create profiles and track their balance
 pip install -r requirements.txt
 ```
 4. Add a SECRET_KEY to your enviroment variables or change it manually in `config.py` (default set to "verysecretkey").
-4.1. Set up other environment variables in `config.py` if you want to send password reset emails from gmail.
+  4.1. Set up other environment variables in `config.py` if you want to send password reset emails from gmail.
 5. Run the development server:
 ```bash
 python app.py
